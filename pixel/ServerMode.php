@@ -5,9 +5,6 @@ header('Access-Control-Allow-Headers: content-type');
 header('Access-Control-Allow-Origin: *');
 
 
-    
-
-
     $data = json_decode(file_get_contents('php://input'), true);    
 
     $conn = mysqli_connect("localhost", $data["username"], $data["password"], "colors");

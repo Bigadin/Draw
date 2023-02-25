@@ -52,35 +52,6 @@ function getData() {
           }
       }
   };
-  xhr.open("GET", "https://c001-105-101-50-48.eu.ngrok.io/pixel/getElementOfDB.php", true);
+  xhr.open("GET", "https://479a-105-101-27-254.eu.ngrok.io/pixel/getElementOfDB.php", true);
   xhr.send();
 }
-
-
-
-function regenerates(){
-  
-
-
-
-  
-  /*
-    fetch('http://localhost/pixel/getElementOfDB.php')
-    .then(response => response.json())
-    .then(colorsArray => {
-      // Loop through the colorsArray
-      colorsArray.forEach(color => {
-        let row = color.raw;
-        let col = color.col;
-        let colorValue = color.colorHex;
-    
-        // Get the table cell with the matching row and col values
-        let tableCell = document.getElementById("grid").rows[row].cells[col];
-    
-        // Set the background color of the cell to the colorValue
-        tableCell.style.backgroundColor = colorValue;
-      });
-    })
-    .catch(error => console.error(error));
-  */
-  }

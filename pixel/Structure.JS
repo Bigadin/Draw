@@ -1,4 +1,7 @@
-const grid = document.querySelector("#grid");
+const drawingWall = document.querySelector("#drawing-wall");
+const box = document.querySelector("#container");
+const grid = document.createElement("table");
+grid.style.borderCollapse = "collapse";
 
 const xhr = new XMLHttpRequest();
 
@@ -6,16 +9,19 @@ const rows = grid.rows;
 const colors = [];
 const colorPicker = document.querySelector("#color-picker");
 
-const sendBtn = document.createElement("button");
+const sendBtn = document.getElementById("add-button");
 const deletBtn = document.createElement("button");
 
-sendBtn.innerHTML = "Send";
+sendBtn.innerHTML = "Submit";
+
 deletBtn.innerHTML ="Delete all colums";
 
 sendBtn.addEventListener("click", send);
 deletBtn.addEventListener("click",DeleteData);
 
-document.body.appendChild(sendBtn);
+sendBtn.classList.add("add-drawing-btn");
+
+box.appendChild(sendBtn);
 //document.body.appendChild(deletBtn);
 
 //regenerate the color
@@ -58,9 +64,9 @@ function send() {
       const params = new URLSearchParams(window.location.search);
 const username = params.get('username');
 const password = params.get('password');
-
+console.log(username);
 const data = { username: username, password: password, colors: colors };
-xhr.open("POST", "https://c001-105-101-50-48.eu.ngrok.io/pixel/ServerMode.php", true);
+xhr.open("POST", "https://479a-105-101-27-254.eu.ngrok.io/pixel/ServerMode.php", true);
 xhr.setRequestHeader("Content-Type", "application/json");
 xhr.onreadystatechange = function() {
   if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
@@ -73,10 +79,11 @@ sendBtn.removeEventListener("click", send);
 // Print something
 
 // Delay page reload by 2 seconds
+/*
 setTimeout(function() {
    location.reload();
 }, 2000);
-
+*/
 }
 
 
@@ -94,39 +101,34 @@ setTimeout(function() {
 //-----------------------------------------//
 
 for (let i = 0; i < 9; i++) {
-const row = document.createElement("tr");
-for (let j = 0; j < 9; j++) {
-const cell = document.createElement("td");
+  const row = document.createElement("tr");
+  for (let j = 0; j < 9; j++) {
+    const cell = document.createElement("td");
+    cell.style.border = "1px solid black";
+    cell.style.width = "50px";
+    cell.style.height = "50px";
+    cell.addEventListener("click", function() {
 
-// fonction de click
-cell.addEventListener("click", function() {
-this.previousColor = this.style.backgroundColor;
-this.style.backgroundColor = colorPicker.value;
+      this.previousColor = this.style.backgroundColor;
+      this.style.backgroundColor = colorPicker.value;
+    });
 
-});
-
-//fonction back
-cell.addEventListener("contextmenu", function(event) {
-event.preventDefault();
-if (this.previousColor) {
-this.style.backgroundColor = this.previousColor;
-this.previousColor = null;
-} else {
-this.style.backgroundColor = "";
-}
-});
-  //fonction colorPicker
- cell.addEventListener("mousedown", function(event) {
-  if (event.buttons === 4) {
-    const bgColor = window.getComputedStyle(this).getPropertyValue("background-color");
-    const color = tinycolor(bgColor);
-    const hex = color.toHexString();
-    colorPicker.value = hex;
+    cell.addEventListener("contextmenu", function(event) {
+      event.preventDefault();
+      if (this.previousColor) {
+        this.style.backgroundColor = this.previousColor;
+        this.previousColor = null;
+      } else {
+        this.style.backgroundColor = "";
+      }
+    });
+    cell.addEventListener("mousedown", function(event) {
+      if (event.buttons === 4) {
+        colorPicker.value = window.getComputedStyle(this).getPropertyValue("background-color");
+      }
+    });
+    row.appendChild(cell);
   }
-});
-
-
-row.appendChild(cell);
+  grid.appendChild(row);
 }
-grid.appendChild(row);
-}
+drawingWall.appendChild(grid);
